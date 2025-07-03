@@ -1,0 +1,66 @@
+﻿
+@model IEnumerable<Movie>
+
+@{
+    ViewData["Title"] = "Movie List";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">🎬 Movie List</h2>
+
+    <div class="text-end mb-3">
+        <a class="btn btn-primary" href="/Movie/Create">+ Add Movie</a>
+    </div>
+
+    <table class="table table-bordered table-striped shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Rating ⭐</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@movie.Title</td>
+                    <td>@movie.Genre</td>
+                    <td>@movie.Rating</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="/Movie/Edit/@movie.Id">Edit</a>
+                        @* <a class="btn btn-sm btn-danger" href="/Movie/Delete/@movie.Id">Delete</a> *@
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-@movie.Id">Delete</button>
+
+                    </td>
+
+                </tr>
+                <!-- Trigger -->
+
+                <!-- Modal -->
+                <div class="modal fade" id="deleteModal-@movie.Id" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <form method="post" asp-action="Delete">
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title">Delete Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete <strong>@movie.Title</strong>?</p>
+                                    <input type="hidden" name="id" value="@movie.Id" />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </tbody>
+    </table>
+</div>
